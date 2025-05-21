@@ -122,5 +122,3 @@ Proiectul este organizat conform bunelor practici, pentru a asigura scalabilitat
 * `allure-report/`: Directorul care conține raportul HTML interactiv generat de Allure.
 
 ---
-
-Acest `README.md` nou oferă o descriere curată a proiectului tău de testare și instrucțiuni clare pentru oricine dorește să-l folosească.
