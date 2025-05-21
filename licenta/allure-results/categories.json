@@ -1,0 +1,1 @@
+[{"name":"Teste Instabile (Flaky)","messageRegex":".*Flaky.*","matchedStatuses":["failed","broken"]},{"name":"Teste Ignorate (Skipped)","messageRegex":".*Ignored.*","matchedStatuses":["skipped"]},{"name":"Erori de Mediu/Configurare","messageRegex":".*(Timeout|Connection refused|Browser closed unexpectedly).*","matchedStatuses":["broken"]}]
