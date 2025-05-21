@@ -1,78 +1,126 @@
-# Summer 2024 QA Hiring Homework
+# Proiect de Testare Automatizată - Task Manager & API
 
-The Repo is a sample React application that will be used to assess the candidate's skills in the QA task. The repo is front-end only.
+Bun venit în repository-ul proiectului de testare automatizată! Acest proiect demonstrează capabilitățile de automatizare a testelor End-to-End (E2E) și API, utilizând framework-ul modern Playwright. El a fost conceput pentru a asigura calitatea unei aplicații simple de gestionare a sarcinilor (Task Manager) și a valida funcționalitatea unui API public.
 
-## The Sample App
+## Prezentarea Proiectului
 
-The app is a simple Task Manager application that displays a list of Tasks.
-A task has 5 ( user-facing ) properties:
+Acest repository conține soluția de testare automatizată, nu aplicația Task Manager în sine. Proiectul de testare este structurat pentru a fi robust, mentenabil și eficient, incorporând bune practici precum Page Object Model (POM) și generarea dinamică a datelor de test cu `faker-js`. Rapoartele detaliate sunt generate folosind Allure, oferind o vizualizare clară a rezultatelor execuțiilor.
 
-```
-- Title - string
-- Description - string
-- Importance - High, Medium, Low
-- Label - Work, Social, Home, Hobby
-- Completeness - boolean
-```
+## Aplicația Testată: Task Manager
 
-The app has the following features:
+Aplicația `Task Manager` este o aplicație React simplă pentru gestionarea sarcinilor. Aceasta permite utilizatorilor să:
+* **Adauge** sarcini noi.
+* **Șteargă** sarcini existente.
+* **Editeze** detalii ale sarcinilor.
+* **Marcheze** sarcini ca fiind **complete/incomplete**.
+* **Filtreze** sarcinile după etichetă (Label).
+* **Sorteze** sarcinile după importanță (Importance).
 
-1. User should be able to **add** a task
-2. User should be able to **delete** a task
-3. User should be able to **edit** a task
-4. User should be able to **mark** a task as **complete / incomplete**
-5. User should be able to **filter** tasks **by label**
-6. User should be able to **sort** tasks **by importance**
+Detalii ale unei sarcini:
+* **Titlu** (string) - obligatoriu, trebuie să înceapă cu literă mare.
+* **Descriere** (string) - opțional.
+* **Importanță** (High, Medium, Low) - obligatoriu, implicit Medium.
+* **Etichetă** (Work, Social, Home, Hobby) - opțional, implicit Work.
+* **Stare (Completeness)** (boolean) - implicit `false`.
 
-Product requirements for adding tasks are:
+**Notă:** Testele API sunt realizate pe un serviciu public extern (ex: `https://dummyjson.com`), nu pe un API al aplicației Task Manager.
 
-1. Title and Importance are required
-2. Description and Label are optional
-3. Completeness is set to false by default
-4. Importance is set to Medium by default
-5. Label is set to Work by default
-6. Title should start with capital letter
+---
 
-Other requirements are up to the candidate's interpretation - since a lot of the times on the job, requirements are not clear and the QA has to make a decision based on the context. A thing to keep in mind is that the app should be user-friendly and intuitive.
+## Ghid de Pornire Rapidă
 
-## Homework
+Pentru a rula testele și a vizualiza rapoartele, trebuie să urmați câțiva pași simpli. Asigurați-vă că aveți Node.js (versiunea LTS recomandată) și npm (incluse cu Node.js) instalate pe sistemul dumneavoastră.
 
-The position is highly focused on automation ( around 90% ), but sometimes manual testing is inevitable - especially when trying to move things along and validate small fixes for deploys - that's why we expect candidates to be proficient in both. The homework is divided into two parts:
+### 1. Pornirea Aplicației Testate (Task Manager)
 
-1. Exploratory Testing and Bug Reporting
-2. Automated Testing
+Înainte de a rula testele E2E, este esențial ca aplicația `Task Manager` să fie pornită și accesibilă la `http://localhost:5173`.
 
-### Exploratory Testing and Bug Reporting
+1.  **Clonați repository-ul aplicației `Task Manager`**:
+    ```bash
+    git clone https://github.com/johny123ars/proiect-licenta
+    ```
+    *Dacă aplicația Task Manager este în același repository cu testele și este localizată într-un sub-director (ex: `app/`), atunci ignorați pasul de clonare și doar navigați în directorul ei.*
+2.  **Navigați în directorul aplicației:**
+    ```bash
+    cd licenta/proiect/licenta
+    ```
+3.  **Instalați dependențele aplicației:**
+    ```bash
+    npm install
+    ```
+4.  **Porniți aplicația:**
+    ```bash
+    npm run dev
+    ```
+    Aplicația ar trebui să fie acum accesibilă în browser la `http://localhost:5173`. Lăsați acest proces să ruleze într-un terminal separat.
 
-- The candidate is expected to test the application and report any bugs found.
-- We encourage to look for both functional and visual (UX) bugs.
-- The candidate should provide a report of the bugs found.
+### 2. Configurație și Rularea Proiectului de Testare Automatizată
+    Această comandă va instala Playwright, `allure-playwright` și `faker-js`, alături de alte dependențe necesare.
+4.  **Instalați driverele Playwright pentru browsere:**
+    ```bash
+    npx playwright install
+    ```
+    Aceasta va descărca browserele (Chromium, Firefox, WebKit) necesare pentru rularea testelor.
 
-You will be evaluated on the quality of the report and the bugs found.
+### 3. Rularea Testelor
 
-### Automated Testing
+Proiectul este configurat pentru a rula teste E2E (UI) și teste API. Puteți rula toate testele sau selectiv.
 
-The candidate is expected to write automated tests for the application, by choosing either Cypress or Playwright as the testing framework.
-Here is what should be covered
+* **Rularea Tuturor Testelor (E2E UI și API):**
+    ```bash
+    npx playwright test --reporter=line,allure-playwright
+    ```
+    *Această comandă va executa testele pe Chromium, Firefox și API, și va genera datele brute pentru raportul Allure în directorul `allure-results/`.*
 
-- 5 user stories
-- 3 regression tests for functional bugs found during manual testing ( they should fail when run, because the bugs are not fixed yet )
-- A test that generates a test of all possible combinations of the task properties ( importance, label, completeness ) and takes a screenshot of the app after each combination is added.
+* **Rularea Testelor pe un Browser/Proiect Specific:**
+    * **Doar teste E2E pe Chromium:**
+        ```bash
+        npx playwright test --project=chromium --workers=1 --reporter=line,allure-playwright
+        ```
+    * **Doar teste E2E pe Firefox:**
+        ```bash
+        npx playwright test --project=firefox --workers=1 --reporter=line,allure-playwright
+        ```
+    * **Doar teste API:**
+        ```bash
+        npx playwright test --project=api --workers=1 --reporter=line,allure-playwright
+        ```
 
-## Steps to follow
+* **Rularea unui Singur Fișier de Test (ex: un test UI de login):**
+    ```bash
+    npx playwright test e2e/tests/ui/login.spec.ts --headed
+    ```
 
-1. Fork this public repo into a private repo
-2. Invite the reviewer to the forked repo
-3. Clone the forked repo
-4. cd into the app folder and Install the dependencies `npm install`
-5. Run the app using `npm run dev`
-6. Start testing the app
-7. Write the bug report based on findings and commit it in the root folder ( not the app folder)
-8. Install the testing framework of your choice
-9. Write the automated tests
-10. Commit the tests to the app folder
-11. Push the changes to the forked repo on a new branch
-12. Open a PR to the main branch
-13. Add the reviewer as a reviewer to the PR
+### 4. Generarea și Vizualizarea Rapoartelor Allure
 
-If you have any questions, feel free to open an issue in your private repo ( so other candidates don't see the questions ) and I'll do my best to answer them ASAP.
+După rularea testelor, puteți genera un raport HTML interactiv pentru o analiză detaliată.
+
+1.  **Generați raportul HTML Allure:**
+    ```bash
+    allure generate allure-results --clean -o allure-report
+    ```
+    *Flag-ul `--clean` este important; el șterge rezultatele din rulările anterioare pentru a asigura un raport proaspăt.*
+2.  **Deschideți raportul Allure în browser:**
+    ```bash
+    allure open allure-report
+    ```
+    Aceasta va lansa automat raportul interactiv în browserul dumneavoastră implicit, oferind o perspectivă detaliată asupra execuției testelor, a eșecurilor, a duratelor și a altor metrici relevante.
+
+---
+
+## Structura Proiectului de Testare
+
+Proiectul este organizat conform bunelor practici, pentru a asigura scalabilitate și mentenabilitate:
+
+* `e2e/tests/api/`: Fișierele de test pentru validarea funcționalităților API.
+* `e2e/tests/ui/`: Fișierele de test E2E pentru interfața utilizator a aplicației Task Manager.
+* `e2e/pages/`: Implementarea Page Object Model (POM) pentru abstracția interacțiunilor UI.
+* `e2e/utils/`: Funcții utilitare și helper-e reutilizabile în cadrul testelor.
+* `playwright.config.ts`: Fișierul de configurare principal Playwright, unde sunt definite browserele, reporterii (inclusiv Allure), și alte setări.
+* `package.json`: Gestionează dependențele și scripturile npm ale proiectului.
+* `allure-results/`: Directorul care conține rezultatele brute (`.json`) generate de Allure după fiecare rulare.
+* `allure-report/`: Directorul care conține raportul HTML interactiv generat de Allure.
+
+---
+
+Acest `README.md` nou oferă o descriere curată a proiectului tău de testare și instrucțiuni clare pentru oricine dorește să-l folosească.
